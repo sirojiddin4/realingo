@@ -1,0 +1,210 @@
+/* Custom styles for Realingo */
+
+/* Basic styling */
+body {
+    font-family: 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+    color: #333;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    background-color: #f8f9fa;
+}
+
+main.container {
+    flex: 1;
+    padding-bottom: 2rem;
+    padding-top: 1.5rem;
+}
+
+/* Card hover effects */
+.card {
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    margin-bottom: 1rem;
+    border-radius: 10px;
+    overflow: hidden;
+}
+
+.card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+}
+
+/* Navbar customization */
+.navbar-dark.bg-primary {
+    background-color: #4361ee !important;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+.navbar-brand {
+    font-weight: bold;
+    letter-spacing: 1px;
+}
+
+/* Dropdown menu animation */
+.navbar .dropdown-menu {
+    margin-top: 0;
+    opacity: 0;
+    transform: translateY(-10px);
+    display: block;
+    visibility: hidden;
+    transition: all 0.3s ease;
+}
+
+.navbar .dropdown:hover > .dropdown-menu {
+    opacity: 1;
+    transform: translateY(0);
+    visibility: visible;
+}
+
+/* Button styling */
+.btn-primary {
+    background-color: #4361ee;
+    border-color: #4361ee;
+}
+
+.btn-primary:hover,
+.btn-primary:focus {
+    background-color: #3a56d4;
+    border-color: #3a56d4;
+}
+
+.btn-outline-primary {
+    color: #4361ee;
+    border-color: #4361ee;
+}
+
+.btn-outline-primary:hover,
+.btn-outline-primary:focus {
+    background-color: #4361ee;
+    border-color: #4361ee;
+}
+
+/* Form styling */
+.form-control:focus,
+.form-select:focus {
+    border-color: #4361ee;
+    box-shadow: 0 0 0 0.25rem rgba(67, 97, 238, 0.25);
+}
+
+/* Footer customization */
+footer {
+    border-top: 1px solid rgba(0, 0, 0, 0.1);
+    color: #666;
+    margin-top: auto;
+}
+
+/* Home page specific styling */
+.display-4 {
+    font-weight: 600;
+}
+
+/* Card headers */
+.card-header {
+    font-weight: 600;
+}
+
+/* Tutor image styling */
+.tutor-image-container {
+    position: relative;
+    display: inline-block;
+    margin: 0 auto;
+}
+
+.tutor-image {
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease;
+}
+
+.tutor-image:hover {
+    transform: scale(1.05);
+}
+
+.tutor-select-badge {
+    position: absolute;
+    bottom: 5px;
+    right: 5px;
+    background-color: #4361ee;
+    color: white;
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+}
+
+/* Tutor selection modal */
+.tutor-option {
+    cursor: pointer;
+    padding: 10px;
+    border-radius: 10px;
+    transition: all 0.2s ease;
+}
+
+.tutor-option:hover {
+    background-color: #f0f4ff;
+    transform: translateY(-5px);
+}
+
+/* Start learning button styling inspired by chess.com */
+.start-learning-btn {
+    border-radius: 10px;
+    font-size: 1.25rem;
+    font-weight: 600;
+    letter-spacing: 0.5px;
+    background: #4361ee;
+    background: linear-gradient(135deg, #4361ee 0%, #3a56d4 100%);
+    border: none;
+    transition: all 0.3s ease;
+}
+
+.start-learning-btn:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 10px 20px rgba(67, 97, 238, 0.3);
+    background: linear-gradient(135deg, #3a56d4 0%, #304bc6 100%);
+}
+
+.start-learning-btn i {
+    font-size: 1.5rem;
+    vertical-align: middle;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .display-4 {
+        font-size: 2.5rem;
+    }
+    h1 {
+        font-size: 2rem;
+    }
+    h2 {
+        font-size: 1.75rem;
+    }
+    .tutor-image {
+        width: 120px !important;
+        height: 120px !important;
+    }
+}
+
+@media (min-height: 800px) {
+    main.container {
+        padding-top: 2rem;
+        padding-bottom: 2rem;
+    }
+}
+
+/* Profile image in navbar (default was 24px — we override to 50px) */
+.navbar-profile-img {
+    width: 50px !important;
+    height: 50px !important;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 1px solid rgba(255, 255, 255, 0.5);
+}
+
+/* Force thinner navbar by overriding .navbar padding */
+.navbar {
+    padding-top: 0.25rem !important;
+    padding-bottom: 0.25rem !important;
+}

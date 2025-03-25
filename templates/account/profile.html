@@ -1,0 +1,268 @@
+{% extends 'base.html' %}
+
+{% block title %}Realingo - Edit Your Profile{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-md-9 mx-auto">
+        <ul class="nav nav-tabs mb-4" id="profileTabs" role="tablist">
+            <li class="nav-item" role="presentation">
+                <button class="nav-link active" id="profile-tab" data-bs-toggle="tab" data-bs-target="#profile" type="button" role="tab" aria-controls="profile" aria-selected="true">
+                    <i class="bi bi-translate me-2"></i>Learning Profile
+                </button>
+            </li>
+            <li class="nav-item" role="presentation">
+                <button class="nav-link" id="account-tab" data-bs-toggle="tab" data-bs-target="#account" type="button" role="tab" aria-controls="account" aria-selected="false">
+                    <i class="bi bi-person me-2"></i>Account Settings
+                </button>
+            </li>
+            <li class="nav-item" role="presentation">
+                <button class="nav-link" id="password-tab" data-bs-toggle="tab" data-bs-target="#password" type="button" role="tab" aria-controls="password" aria-selected="false">
+                    <i class="bi bi-shield-lock me-2"></i>Change Password
+                </button>
+            </li>
+        </ul>
+
+        <div class="tab-content" id="profileTabsContent">
+            <!-- Learning Profile Tab -->
+            <div class="tab-pane fade show active" id="profile" role="tabpanel" aria-labelledby="profile-tab">
+                <div class="card shadow">
+                    <div class="card-header bg-primary text-white">
+                        <h2 class="card-title mb-0">Your Learning Profile</h2>
+                    </div>
+                    <div class="card-body p-4">
+                        <div class="row mb-4">
+                            <div class="col-md-3 text-center">
+                                <div class="profile-image-container mb-3">
+                                    {% if user.profile.profile_image %}
+                                        <img src="{{ user.profile.profile_image.url }}" alt="{{ user.username }}" class="rounded-circle" style="width: 150px; height: 150px; object-fit: cover; border: 3px solid #4361ee;">
+                                    {% else %}
+                                        <div class="bg-light rounded-circle p-3 mx-auto d-flex align-items-center justify-content-center" style="width: 150px; height: 150px; border: 3px solid #4361ee;">
+                                            <div class="h1 text-primary mb-0">{{ user.username|slice:":1"|upper }}</div>
+                                        </div>
+                                    {% endif %}
+                                </div>
+                                <p class="mt-2">{{ user.username }}</p>
+                                <p class="text-muted small">{{ user.email }}</p>
+                            </div>
+                            <div class="col-md-9">
+                                <p class="lead">
+                                    Customize your learning profile to personalize your language learning experience.
+                                </p>
+                                
+                                <form method="post" enctype="multipart/form-data">
+                                    {% csrf_token %}
+                                    <input type="hidden" name="form_type" value="profile">
+                                    
+                                    {% if profile_form.errors %}
+                                        <div class="alert alert-danger">
+                                            <p>There were some errors with your submission:</p>
+                                            {{ profile_form.errors }}
+                                        </div>
+                                    {% endif %}
+                                    
+                                    <div class="mb-4">
+                                        <label for="id_profile_image" class="form-label fw-bold">Profile Picture</label>
+                                        {{ profile_form.profile_image }}
+                                        <div class="form-text">Upload a profile picture (optional).</div>
+                                        {% if profile_form.profile_image.errors %}
+                                            <div class="text-danger">{{ profile_form.profile_image.errors }}</div>
+                                        {% endif %}
+                                    </div>
+                                    
+                                    <div class="mb-4">
+                                        <label for="id_learning_language" class="form-label fw-bold">What language would you like to learn?</label>
+                                        {{ profile_form.learning_language }}
+                                        {% if profile_form.learning_language.errors %}
+                                            <div class="text-danger">{{ profile_form.learning_language.errors }}</div>
+                                        {% endif %}
+                                    </div>
+                                    
+                                    <div class="mb-4">
+                                        <label for="id_proficiency_level" class="form-label fw-bold">What is your current proficiency level?</label>
+                                        {{ profile_form.proficiency_level }}
+                                        <div class="form-text">This helps us adjust the difficulty of the language content for you.</div>
+                                        {% if profile_form.proficiency_level.errors %}
+                                            <div class="text-danger">{{ profile_form.proficiency_level.errors }}</div>
+                                        {% endif %}
+                                    </div>
+                                    
+                                    <div class="mb-4">
+                                        <label for="id_chosen_field" class="form-label fw-bold">What field would you like to focus on?</label>
+                                        {{ profile_form.chosen_field }}
+                                        <div class="form-text">This will determine the context and vocabulary of your learning stories.</div>
+                                        {% if profile_form.chosen_field.errors %}
+                                            <div class="text-danger">{{ profile_form.chosen_field.errors }}</div>
+                                        {% endif %}
+                                    </div>
+                                    
+                                    <div class="mb-4">
+                                        <label for="id_assigned_tutor" class="form-label fw-bold">Select your preferred tutor</label>
+                                        {{ profile_form.assigned_tutor }}
+                                        <div class="form-text">Choose a tutor that matches your learning style.</div>
+                                        {% if profile_form.assigned_tutor.errors %}
+                                            <div class="text-danger">{{ profile_form.assigned_tutor.errors }}</div>
+                                        {% endif %}
+                                    </div>
+                                    
+                                    <div class="d-flex justify-content-between">
+                                        <a href="{% url 'home' %}" class="btn btn-outline-secondary">Cancel</a>
+                                        <button type="submit" class="btn btn-primary">Save Learning Profile</button>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Account Settings Tab -->
+            <div class="tab-pane fade" id="account" role="tabpanel" aria-labelledby="account-tab">
+                <div class="card shadow">
+                    <div class="card-header bg-primary text-white">
+                        <h2 class="card-title mb-0">Account Settings</h2>
+                    </div>
+                    <div class="card-body p-4">
+                        <form method="post">
+                            {% csrf_token %}
+                            <input type="hidden" name="form_type" value="user">
+                            
+                            {% if user_form.errors %}
+                                <div class="alert alert-danger">
+                                    <p>There were some errors with your submission:</p>
+                                    {{ user_form.errors }}
+                                </div>
+                            {% endif %}
+                            
+                            <div class="mb-4">
+                                <label for="id_username" class="form-label fw-bold">Username</label>
+                                {{ user_form.username }}
+                                <div class="form-text">Your username is visible to other users.</div>
+                                {% if user_form.username.errors %}
+                                    <div class="text-danger">{{ user_form.username.errors }}</div>
+                                {% endif %}
+                            </div>
+                            
+                            <div class="mb-4">
+                                <label for="id_email" class="form-label fw-bold">Email Address</label>
+                                {{ user_form.email }}
+                                <div class="form-text">Your email is used for account recovery and notifications.</div>
+                                {% if user_form.email.errors %}
+                                    <div class="text-danger">{{ user_form.email.errors }}</div>
+                                {% endif %}
+                            </div>
+                            
+                            <div class="row mb-4">
+                                <div class="col-md-6">
+                                    <label for="id_first_name" class="form-label fw-bold">First Name</label>
+                                    {{ user_form.first_name }}
+                                    {% if user_form.first_name.errors %}
+                                        <div class="text-danger">{{ user_form.first_name.errors }}</div>
+                                    {% endif %}
+                                </div>
+                                <div class="col-md-6">
+                                    <label for="id_last_name" class="form-label fw-bold">Last Name</label>
+                                    {{ user_form.last_name }}
+                                    {% if user_form.last_name.errors %}
+                                        <div class="text-danger">{{ user_form.last_name.errors }}</div>
+                                    {% endif %}
+                                </div>
+                                <div class="col-12 mt-2">
+                                    <div class="form-text">Your name is optional and will be used to personalize your experience.</div>
+                                </div>
+                            </div>
+                            
+                            <div class="d-flex justify-content-between">
+                                <a href="{% url 'home' %}" class="btn btn-outline-secondary">Cancel</a>
+                                <button type="submit" class="btn btn-primary">Save Account Settings</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Password Change Tab -->
+            <div class="tab-pane fade" id="password" role="tabpanel" aria-labelledby="password-tab">
+                <div class="card shadow">
+                    <div class="card-header bg-primary text-white">
+                        <h2 class="card-title mb-0">Change Password</h2>
+                    </div>
+                    <div class="card-body p-4">
+                        <form method="post">
+                            {% csrf_token %}
+                            <input type="hidden" name="form_type" value="password">
+                            
+                            {% if password_form.errors %}
+                                <div class="alert alert-danger">
+                                    <p>There were some errors with your submission:</p>
+                                    {{ password_form.errors }}
+                                </div>
+                            {% endif %}
+                            
+                            <div class="mb-4">
+                                <label for="id_old_password" class="form-label fw-bold">Current Password</label>
+                                {{ password_form.old_password }}
+                                {% if password_form.old_password.errors %}
+                                    <div class="text-danger">{{ password_form.old_password.errors }}</div>
+                                {% endif %}
+                            </div>
+                            
+                            <div class="mb-4">
+                                <label for="id_new_password1" class="form-label fw-bold">New Password</label>
+                                {{ password_form.new_password1 }}
+                                <div class="form-text small">
+                                    <ul class="list-unstyled">
+                                        <li>Your password can't be too similar to your other personal information.</li>
+                                        <li>Your password must contain at least 8 characters.</li>
+                                        <li>Your password can't be a commonly used password.</li>
+                                        <li>Your password can't be entirely numeric.</li>
+                                    </ul>
+                                </div>
+                                {% if password_form.new_password1.errors %}
+                                    <div class="text-danger">{{ password_form.new_password1.errors }}</div>
+                                {% endif %}
+                            </div>
+                            
+                            <div class="mb-4">
+                                <label for="id_new_password2" class="form-label fw-bold">Confirm New Password</label>
+                                {{ password_form.new_password2 }}
+                                {% if password_form.new_password2.errors %}
+                                    <div class="text-danger">{{ password_form.new_password2.errors }}</div>
+                                {% endif %}
+                            </div>
+                            
+                            <div class="d-flex justify-content-between">
+                                <a href="{% url 'home' %}" class="btn btn-outline-secondary">Cancel</a>
+                                <button type="submit" class="btn btn-primary">Change Password</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+    // Activate tab based on URL hash
+    document.addEventListener('DOMContentLoaded', function() {
+        const hash = window.location.hash;
+        if (hash) {
+            const tab = document.querySelector(`[data-bs-target="${hash}"]`);
+            if (tab) {
+                new bootstrap.Tab(tab).show();
+            }
+        }
+        
+        // Update URL hash when a tab is clicked
+        const tabs = document.querySelectorAll('[data-bs-toggle="tab"]');
+        tabs.forEach(tab => {
+            tab.addEventListener('shown.bs.tab', function(e) {
+                window.location.hash = e.target.getAttribute('data-bs-target');
+            });
+        });
+    });
+</script>
+{% endblock %}

@@ -1,0 +1,459 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}
+Realingo - Your Dashboard
+{% endblock title %}
+
+{% block content %}
+{% if user.is_authenticated %}
+<div class="container-fluid px-4">
+    <div class="row g-4">
+        <!-- Left column for tutor profile -->
+        <div class="col-md-3">
+            <div class="card shadow h-100">
+                <div class="card-body text-center">
+                    <div class="position-relative mb-3">
+                        <!-- Larger round tutor image, clickable to select tutor -->
+                        <div class="tutor-image-container" data-bs-toggle="modal" data-bs-target="#tutorSelectionModal">
+                            {% if tutor and tutor.image %}
+                                <img src="{{ tutor.image.url }}"
+                                     class="rounded-circle tutor-image"
+                                     alt="{{ tutor.name }}"
+                                     style="width: 150px; height: 150px; object-fit: cover; cursor: pointer; border: 3px solid #4361ee;">
+                            {% else %}
+                                <img src="{% static 'images/default_tutor.png' %}"
+                                     class="rounded-circle tutor-image"
+                                     alt="Default Tutor"
+                                     style="width: 150px; height: 150px; object-fit: cover; cursor: pointer; border: 3px solid #4361ee;">
+                            {% endif %}
+                            <div class="tutor-select-badge">
+                                <i class="bi bi-person-plus-fill"></i>
+                            </div>
+                        </div>
+                        <h4 class="mt-2">
+                            {% if tutor %}{{ tutor.name }}{% else %}Select a Tutor{% endif %}
+                        </h4>
+                        <p class="text-muted">Your Language Tutor</p>
+                    </div>
+
+                    <div class="tutor-info mt-4">
+                        {% if tutor %}
+                            <div class="d-flex justify-content-between mb-2">
+                                <span><i class="bi bi-star-fill text-warning me-1"></i> Rating:</span>
+                                <span class="fw-bold">{{ tutor.rating }}/5.0</span>
+                            </div>
+                            <div class="d-flex justify-content-between mb-2">
+                                <span><i class="bi bi-mortarboard-fill text-primary me-1"></i> Specialty:</span>
+                                <span class="fw-bold">{{ tutor.get_specialty_display }}</span>
+                            </div>
+                            <div class="d-flex justify-content-between mb-2">
+                                <span><i class="bi bi-calendar-check text-success me-1"></i> Experience:</span>
+                                <span class="fw-bold">{{ tutor.years_experience }} years</span>
+                            </div>
+                            {% if tutor.characteristics %}
+                                <div class="mt-3 text-start">
+                                    <p class="small text-muted">
+                                        {{ tutor.characteristics|truncatechars:150 }}
+                                    </p>
+                                </div>
+                            {% endif %}
+                        {% else %}
+                            <div class="alert alert-info">
+                                Click on the profile picture above to select a tutor.
+                            </div>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Right column for statistics and action button -->
+        <div class="col-md-9">
+            <div class="row h-100">
+                <!-- Statistics Card -->
+                <div class="col-12 mb-4">
+                    <div class="card shadow">
+                        <div class="card-header bg-light py-2">
+                            <h5 class="card-title mb-0">Learning Progress</h5>
+                        </div>
+                        <div class="card-body py-3">
+                            <div class="row">
+                                <div class="col-md-3 col-6 text-center">
+                                    <div class="display-6 text-primary">0</div>
+                                    <p class="text-muted small mb-0">Stories Completed</p>
+                                </div>
+                                <div class="col-md-3 col-6 text-center">
+                                    <div class="display-6 text-primary">0</div>
+                                    <p class="text-muted small mb-0">Words Learned</p>
+                                </div>
+                                <div class="col-md-3 col-6 text-center">
+                                    <div class="display-6 text-primary">0</div>
+                                    <p class="text-muted small mb-0">Battles Won</p>
+                                </div>
+                                <div class="col-md-3 col-6 text-center">
+                                    <div class="display-6 text-primary">0</div>
+                                    <p class="text-muted small mb-0">Learning Days</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Learning Plan Card -->
+                <div class="col-12 mb-4">
+                    <div class="card shadow">
+                        <div class="card-header bg-light py-2">
+                            <h5 class="card-title mb-0">Your Learning Plan</h5>
+                        </div>
+                        <div class="card-body py-3">
+                            <div class="row">
+                                <div class="col-md-4 mb-3">
+                                    <div class="card h-100 border-0">
+                                        <div class="card-body text-center">
+                                            <div class="display-6 mb-2 text-primary">
+                                                <i class="bi bi-globe"></i>
+                                            </div>
+                                            <h6 class="card-title">Learning</h6>
+                                            <p class="card-text fw-bold">
+                                                {{ profile.get_learning_language_display }}
+                                            </p>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="col-md-4 mb-3">
+                                    <div class="card h-100 border-0">
+                                        <div class="card-body text-center">
+                                            <div class="display-6 mb-2 text-primary">
+                                                <i class="bi bi-bar-chart"></i>
+                                            </div>
+                                            <h6 class="card-title">Level</h6>
+                                            <p class="card-text fw-bold">
+                                                {{ profile.get_proficiency_level_display }}
+                                            </p>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="col-md-4 mb-3">
+                                    <div class="card h-100 border-0">
+                                        <div class="card-body text-center">
+                                            <div class="display-6 mb-2 text-primary">
+                                                <i class="bi bi-briefcase"></i>
+                                            </div>
+                                            <h6 class="card-title">Field</h6>
+                                            <p class="card-text fw-bold">
+                                                {{ profile.get_chosen_field_display }}
+                                            </p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- "Start Learning" Button -->
+                <div class="col-12">
+                    <a href="{% url 'start_learning' %}" class="btn btn-primary btn-lg w-100 py-3 start-learning-btn shadow">
+                        <i class="bi bi-play-circle-fill me-2"></i> Start Learning Now
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Tutor Selection Modal -->
+<div class="modal fade" id="tutorSelectionModal" tabindex="-1" aria-labelledby="tutorSelectionModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="tutorSelectionModalLabel">Choose Your Tutor</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="row g-4">
+                    {% if all_tutors %}
+                        {% for t in all_tutors %}
+                            <div class="col-md-4 col-6 text-center tutor-option"
+                                 data-tutor-id="{{ t.id }}"
+                                 style="cursor: pointer;">
+                                {% if t.image %}
+                                    <img src="{{ t.image.url }}"
+                                         class="rounded-circle mb-2"
+                                         alt="{{ t.name }}"
+                                         style="width: 100px; height: 100px; object-fit: cover;">
+                                {% else %}
+                                    <img src="{% static 'images/default_tutor.png' %}"
+                                         class="rounded-circle mb-2"
+                                         alt="{{ t.name }}"
+                                         style="width: 100px; height: 100px; object-fit: cover;">
+                                {% endif %}
+                                <h6>{{ t.name }}</h6>
+                                <p class="small text-muted mb-0">{{ t.get_specialty_display }}</p>
+                                <div class="text-warning small">
+                                    {% for i in "12345"|make_list %}
+                                        {% if forloop.counter <= t.rating %}
+                                            <i class="bi bi-star-fill"></i>
+                                        {% elif forloop.counter0 < t.rating %}
+                                            <i class="bi bi-star-half"></i>
+                                        {% else %}
+                                            <i class="bi bi-star"></i>
+                                        {% endif %}
+                                    {% endfor %}
+                                </div>
+                            </div>
+                        {% endfor %}
+                    {% else %}
+                        <div class="col-12 text-center">
+                            <p>No tutors are available at the moment. Please check back later.</p>
+                        </div>
+                    {% endif %}
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+                    Cancel
+                </button>
+                <form id="assign-tutor-form" method="post" action="">
+                    {% csrf_token %}
+                    <button type="submit" class="btn btn-primary">
+                        Confirm Selection
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% else %}
+<!-- Landing section for unauthenticated users -->
+<div class="row align-items-center">
+    <div class="col-md-6">
+        <h1 class="display-4">Welcome to Realingo</h1>
+        <p class="lead">
+            The innovative language learning platform that makes learning fun and effective through personalized stories.
+        </p>
+        <p>
+            Sign up now to start your language learning journey with interactive content tailored to your needs.
+        </p>
+        <div class="mt-4">
+            <a href="{% url 'signup' %}" class="btn btn-primary btn-lg">Get Started</a>
+            <a href="{% url 'login' %}" class="btn btn-outline-primary btn-lg ms-2">Login</a>
+        </div>
+    </div>
+    <div class="col-md-6">
+        <div class="card shadow-lg">
+            <div class="card-body p-4">
+                <h2 class="card-title">Why Choose Realingo?</h2>
+                <ul class="list-group list-group-flush">
+                    <li class="list-group-item">
+                        <strong><i class="bi bi-book me-2"></i>Engaging Stories:</strong>
+                        Learn through interactive mini-stories
+                    </li>
+                    <li class="list-group-item">
+                        <strong><i class="bi bi-person-check me-2"></i>Personalized Learning:</strong>
+                        Content adapted to your level and interests
+                    </li>
+                    <li class="list-group-item">
+                        <strong><i class="bi bi-briefcase me-2"></i>Field-Specific:</strong>
+                        Learn vocabulary relevant to your chosen field
+                    </li>
+                    <li class="list-group-item">
+                        <strong><i class="bi bi-robot me-2"></i>Adaptive AI:</strong>
+                        The more you learn, the better it gets
+                    </li>
+                </ul>
+                <div class="mt-3 text-center">
+                    <a href="{% url 'about' %}" class="btn btn-link">Learn more about Realingo</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endif %}
+{% endblock content %}
+
+{% block extra_js %}
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    //
+    // 1) Auto-close any existing .alert after 5s
+    //
+    const alerts = document.querySelectorAll('.alert');
+    alerts.forEach(alert => {
+        setTimeout(() => {
+            const closeButton = alert.querySelector('.btn-close');
+            if (closeButton) {
+                closeButton.click();
+            }
+        }, 5000);
+    });
+
+    //
+    // 2) Password visibility toggle for all password fields
+    //
+    const passwordFields = document.querySelectorAll('input[type="password"]');
+    passwordFields.forEach(field => {
+        const toggleButton = document.createElement('button');
+        toggleButton.type = 'button';
+        toggleButton.className = 'btn btn-outline-secondary';
+        toggleButton.innerHTML = '<i class="bi bi-eye"></i>';
+        toggleButton.title = 'Show/Hide Password';
+
+        if (!field.parentElement.classList.contains('input-group')) {
+            const wrapper = document.createElement('div');
+            wrapper.className = 'input-group';
+            field.parentNode.insertBefore(wrapper, field);
+            wrapper.appendChild(field);
+        }
+
+        field.parentElement.appendChild(toggleButton);
+
+        toggleButton.addEventListener('click', function() {
+            if (field.type === 'password') {
+                field.type = 'text';
+                toggleButton.innerHTML = '<i class="bi bi-eye-slash"></i>';
+            } else {
+                field.type = 'password';
+                toggleButton.innerHTML = '<i class="bi bi-eye"></i>';
+            }
+        });
+    });
+
+    //
+    // 3) Form validation enhancement
+    //
+    const forms = document.querySelectorAll('form');
+    forms.forEach(form => {
+        const submitButton = form.querySelector('button[type="submit"]');
+        if (!submitButton) return;
+
+        form.addEventListener('submit', function(event) {
+            if (!form.checkValidity()) {
+                event.preventDefault();
+                event.stopPropagation();
+            } else {
+                submitButton.innerHTML = '<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Processing...';
+                submitButton.disabled = true;
+            }
+            form.classList.add('was-validated');
+        }, false);
+    });
+
+    //
+    // 4) Tutor Selection: immediate front-end update + form submission
+    //
+    const tutorOptions = document.querySelectorAll('.tutor-option');
+    const tutorImage = document.querySelector('.tutor-image');
+    const tutorNameEl = document.querySelector('.tutor-image-container + h4');
+    const assignTutorForm = document.getElementById('assign-tutor-form');
+
+    let selectedTutorId = null;
+    let selectedTutorImg = null;
+    let selectedTutorName = null;
+
+    tutorOptions.forEach(option => {
+        option.addEventListener('click', function() {
+            tutorOptions.forEach(opt => opt.classList.remove('bg-light', 'border', 'border-primary'));
+            this.classList.add('bg-light', 'border', 'border-primary');
+
+            selectedTutorId = this.dataset.tutorId;
+            selectedTutorImg = this.querySelector('img').src;
+            const nameElem = this.querySelector('h6');
+            selectedTutorName = nameElem ? nameElem.textContent : 'Selected Tutor';
+
+            if (assignTutorForm) {
+                assignTutorForm.action = `/assign-tutor/${selectedTutorId}/`;
+            }
+        });
+    });
+
+    if (assignTutorForm) {
+        assignTutorForm.addEventListener('submit', function() {
+            if (selectedTutorId && selectedTutorImg && selectedTutorName) {
+                // Immediately update the tutor image & name on the page
+                tutorImage.src = selectedTutorImg;
+                tutorNameEl.textContent = selectedTutorName;
+
+                // Optionally show a quick success alert
+                const mainContainer = document.querySelector('main.container');
+                if (mainContainer) {
+                    const alertContainer = document.createElement('div');
+                    alertContainer.className = 'alert alert-success alert-dismissible fade show';
+                    alertContainer.innerHTML = `
+                        <strong>Success!</strong> You've selected ${selectedTutorName} as your tutor.
+                        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                    `;
+                    mainContainer.insertBefore(alertContainer, mainContainer.firstChild);
+                }
+            }
+            // Then the form submits => server updates => page reload => new tutor shows
+        });
+    }
+
+    //
+    // 5) Hover effect for navbar dropdowns (desktop)
+    //
+    if (window.innerWidth >= 992) {
+        const dropdowns = document.querySelectorAll('.navbar .dropdown');
+        dropdowns.forEach(dropdown => {
+            dropdown.addEventListener('mouseover', function() {
+                const dropdownMenu = this.querySelector('.dropdown-menu');
+                if (dropdownMenu) {
+                    dropdownMenu.classList.add('show');
+                    this.querySelector('.dropdown-toggle').setAttribute('aria-expanded', 'true');
+                }
+            });
+            dropdown.addEventListener('mouseout', function() {
+                const dropdownMenu = this.querySelector('.dropdown-menu');
+                if (dropdownMenu) {
+                    dropdownMenu.classList.remove('show');
+                    this.querySelector('.dropdown-toggle').setAttribute('aria-expanded', 'false');
+                }
+            });
+        });
+    }
+
+    //
+    // 6) Profile image preview (user's own profile)
+    //
+    const profileImageInput = document.getElementById('id_profile_image');
+    if (profileImageInput) {
+        profileImageInput.addEventListener('change', function() {
+            if (this.files && this.files[0]) {
+                const reader = new FileReader();
+                const profileContainer = document.querySelector('.profile-image-container');
+
+                reader.onload = function(e) {
+                    // Check if there's already an image
+                    let profileImg = profileContainer.querySelector('img');
+                    if (!profileImg) {
+                        // Remove any letter/avatar placeholder
+                        const letterAvatar = profileContainer.querySelector('div.rounded-circle');
+                        if (letterAvatar) {
+                            letterAvatar.remove();
+                        }
+                        // Create a new <img> for the profile
+                        profileImg = document.createElement('img');
+                        profileImg.classList.add('rounded-circle');
+                        // UPDATED SIZE TO 200PX:
+                        profileImg.style.width = '200px';
+                        profileImg.style.height = '200px';
+                        profileImg.style.objectFit = 'cover';
+                        profileImg.style.border = '3px solid #4361ee';
+                        profileContainer.appendChild(profileImg);
+                    }
+                    profileImg.src = e.target.result;
+                    profileImg.alt = 'Profile Preview';
+                };
+
+                reader.readAsDataURL(this.files[0]);
+            }
+        });
+    }
+});
+</script>
+{% endblock extra_js %}

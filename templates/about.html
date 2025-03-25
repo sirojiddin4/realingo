@@ -1,0 +1,166 @@
+{% extends 'base.html' %}
+
+{% block title %}About Realingo{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-lg-8 mx-auto">
+        <h1 class="mb-4">About Realingo</h1>
+        
+        <div class="card mb-4">
+            <div class="card-body">
+                <h2 class="card-title">Our Mission</h2>
+                <p class="card-text">
+                    Realingo is an innovative language learning platform that combines the power of AI-generated storytelling with interactive language exercises. 
+                    Our mission is to create an engaging, personalized language learning experience that adapts to each user's needs and interests.
+                </p>
+            </div>
+        </div>
+        
+        <div class="card mb-4">
+            <div class="card-body">
+                <h2 class="card-title">How It Works</h2>
+                <p class="card-text">
+                    Realingo creates personalized mini-stories where you play the protagonist establishing a life abroad. 
+                    Each story is tailored to your chosen language field (e.g., general, medical) and adapts its 
+                    complexity based on your proficiency level.
+                </p>
+                <p class="card-text">
+                    As you progress through the stories, you'll encounter interactive exercises that reinforce your learning. 
+                    After completing each mini-story, you'll unlock dedicated vocabulary training sessions to review 
+                    what you've learned.
+                </p>
+                <p class="card-text">
+                    Each completed mini-story contributes to your ongoing language learning "novel," creating a 
+                    continuous narrative that reflects your growth and progress.
+                </p>
+            </div>
+        </div>
+        
+        <div class="card mb-4">
+            <div class="card-body">
+                <h2 class="card-title">Key Features</h2>
+                <ul class="list-group list-group-flush">
+                    <li class="list-group-item">
+                        <i class="bi bi-book text-primary me-2"></i>
+                        <strong>Story-Driven Learning:</strong> Engage with mini-stories that unlock sequentially as you progress
+                    </li>
+                    <li class="list-group-item">
+                        <i class="bi bi-briefcase text-primary me-2"></i>
+                        <strong>Field-Specific Content:</strong> Learn vocabulary relevant to your chosen field
+                    </li>
+                    <li class="list-group-item">
+                        <i class="bi bi-chat-dots text-primary me-2"></i>
+                        <strong>Adaptive Dialogue:</strong> Language complexity adjusts to your proficiency level
+                    </li>
+                    <li class="list-group-item">
+                        <i class="bi bi-card-checklist text-primary me-2"></i>
+                        <strong>Post-Story Training:</strong> Dedicated vocabulary practice sessions after each story
+                    </li>
+                    <li class="list-group-item">
+                        <i class="bi bi-person-check text-primary me-2"></i>
+                        <strong>In-Story Mentoring:</strong> Get guidance and vocabulary tips as you learn
+                    </li>
+                    <li class="list-group-item">
+                        <i class="bi bi-people text-primary me-2"></i>
+                        <strong>Competitive Role Play:</strong> Practice with others in 1 vs. 1 battles
+                    </li>
+                </ul>
+            </div>
+        </div>
+        
+        <div class="card mb-4">
+            <div class="card-body">
+                <h2 class="card-title">Contact Us</h2>
+                <p class="card-text">
+                    Have questions or feedback about Realingo? We'd love to hear from you!
+                </p>
+                <p class="card-text">
+                    <i class="bi bi-envelope me-2"></i>Email: <a href="mailto:contact@realingo.com">contact@realingo.com</a>
+                </p>
+            </div>
+        </div>
+
+        <!-- Content from home page -->
+        <div class="card mt-5">
+            <div class="card-body">
+                <h2 class="card-title mb-4">Learn Languages with Interactive Stories</h2>
+                <div class="row">
+                    <div class="col-md-6">
+                        <p class="lead">
+                            Experience a new way to learn languages through engaging mini-stories tailored to your proficiency level and interests.
+                        </p>
+                        <p>
+                            Realingo combines AI-generated storytelling with language learning, making the process fun, interactive, and personalized.
+                        </p>
+                        {% if user.is_authenticated %}
+                            <a href="{% url 'menu' %}" class="btn btn-primary">Start Learning</a>
+                        {% else %}
+                            <a href="{% url 'signup' %}" class="btn btn-primary">Get Started</a>
+                            <a href="{% url 'login' %}" class="btn btn-outline-primary ms-2">Login</a>
+                        {% endif %}
+                    </div>
+                    <div class="col-md-6">
+                        <h3>Why Realingo?</h3>
+                        <ul class="list-group list-group-flush">
+                            <li class="list-group-item">
+                                <i class="bi bi-book me-2 text-primary"></i>
+                                <strong>Engaging Stories:</strong> Learn through interactive mini-stories
+                            </li>
+                            <li class="list-group-item">
+                                <i class="bi bi-person-check me-2 text-primary"></i>
+                                <strong>Personalized Learning:</strong> Content adapted to your level and interests
+                            </li>
+                            <li class="list-group-item">
+                                <i class="bi bi-briefcase me-2 text-primary"></i>
+                                <strong>Field-Specific:</strong> Learn vocabulary relevant to your chosen field
+                            </li>
+                            <li class="list-group-item">
+                                <i class="bi bi-robot me-2 text-primary"></i>
+                                <strong>Adaptive AI:</strong> The more you learn, the better it gets
+                            </li>
+                            <li class="list-group-item">
+                                <i class="bi bi-trophy me-2 text-primary"></i>
+                                <strong>Competitive Elements:</strong> Engage in 1 vs. 1 battles with other learners
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row mt-4">
+            <div class="col-12 text-center">
+                <h2 class="mb-4">How It Works</h2>
+            </div>
+            <div class="col-md-4 mb-4">
+                <div class="card h-100 text-center">
+                    <div class="card-body">
+                        <i class="bi bi-1-circle display-4 text-primary mb-3"></i>
+                        <h3 class="card-title">Choose Your Path</h3>
+                        <p class="card-text">Select your language, proficiency level, and specific field of interest.</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4 mb-4">
+                <div class="card h-100 text-center">
+                    <div class="card-body">
+                        <i class="bi bi-2-circle display-4 text-primary mb-3"></i>
+                        <h3 class="card-title">Explore Stories</h3>
+                        <p class="card-text">Engage with interactive mini-stories tailored to your learning needs.</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4 mb-4">
+                <div class="card h-100 text-center">
+                    <div class="card-body">
+                        <i class="bi bi-3-circle display-4 text-primary mb-3"></i>
+                        <h3 class="card-title">Master Language</h3>
+                        <p class="card-text">Complete exercises, review vocabulary, and track your progress.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

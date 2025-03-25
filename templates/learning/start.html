@@ -1,0 +1,137 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Realingo - Learning Session{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-md-10 mx-auto">
+        <div class="card shadow">
+            <div class="card-header bg-primary text-white">
+                <div class="d-flex justify-content-between align-items-center">
+                    <h2 class="card-title mb-0">Learning Session</h2>
+                    <div>
+                        <span class="badge bg-light text-dark me-2">{{ user.profile.get_learning_language_display }}</span>
+                        <span class="badge bg-light text-dark">{{ user.profile.get_chosen_field_display }}</span>
+                    </div>
+                </div>
+            </div>
+            <div class="card-body p-4">
+                <div class="row mb-4">
+                    <div class="col-md-3 text-center">
+                        <!-- Tutor section -->
+                        <div class="tutor-info-card p-3 border rounded">
+                            {% if user.profile.assigned_tutor and user.profile.assigned_tutor.image %}
+                                <img src="{{ user.profile.assigned_tutor.image.url }}" 
+                                     class="rounded-circle mb-3" 
+                                     alt="{{ user.profile.assigned_tutor.name }}" 
+                                     style="width: 100px; height: 100px; object-fit: cover;">
+                            {% else %}
+                                <img src="{% static 'images/default_tutor.png' %}" 
+                                     class="rounded-circle mb-3" 
+                                     alt="Tutor" 
+                                     style="width: 100px; height: 100px; object-fit: cover;">
+                            {% endif %}
+                            <h5>
+                                {% if user.profile.assigned_tutor %}
+                                    {{ user.profile.assigned_tutor.name }}
+                                {% else %}
+                                    Your Tutor
+                                {% endif %}
+                            </h5>
+                            <p class="text-muted small mb-0">Here to help you learn</p>
+                        </div>
+                    </div>
+                    <div class="col-md-9">
+                        <!-- Story selection section -->
+                        <h3 class="mb-3">Choose Your Learning Path</h3>
+                        
+                        <div class="row g-3">
+                            <!-- Continue previous story option - will be dynamic in the future -->
+                            <div class="col-md-6">
+                                <div class="card h-100 border-primary">
+                                    <div class="card-body">
+                                        <h5 class="card-title">Continue Your Journey</h5>
+                                        <p class="card-text">Resume your previous learning session and continue your language adventure.</p>
+                                        <div class="progress mb-3">
+                                            <div class="progress-bar bg-primary" role="progressbar" style="width: 35%;" aria-valuenow="35" aria-valuemin="0" aria-valuemax="100">35%</div>
+                                        </div>
+                                        <button class="btn btn-outline-primary">Continue</button>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <!-- Start new story option -->
+                            <div class="col-md-6">
+                                <div class="card h-100">
+                                    <div class="card-body">
+                                        <h5 class="card-title">Start a New Adventure</h5>
+                                        <p class="card-text">Begin a fresh language learning story tailored to your interests and skill level.</p>
+                                        <form class="mb-3">
+                                            <select class="form-select form-select-sm mb-2">
+                                                <option selected>Choose a theme...</option>
+                                                <option>Travel & Adventure</option>
+                                                <option>Business & Career</option>
+                                                <option>Daily Life</option>
+                                                <option>Culture & Traditions</option>
+                                            </select>
+                                        </form>
+                                        <button class="btn btn-primary">Start New</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="alert alert-info mt-4">
+                            <i class="bi bi-info-circle-fill me-2"></i> Your learning progress is automatically saved. Feel free to switch between stories at any time.
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Recent vocabulary section -->
+                <div class="mt-4">
+                    <h4 class="mb-3"><i class="bi bi-card-list me-2"></i>Recent Vocabulary</h4>
+                    <div class="row g-2">
+                        <div class="col-md-3 col-6">
+                            <div class="card border-0 bg-light">
+                                <div class="card-body py-2 px-3">
+                                    <small class="text-muted">English</small>
+                                    <p class="mb-0 fw-bold">Hello</p>
+                                    <small class="text-primary">Basic greeting</small>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-3 col-6">
+                            <div class="card border-0 bg-light">
+                                <div class="card-body py-2 px-3">
+                                    <small class="text-muted">English</small>
+                                    <p class="mb-0 fw-bold">Goodbye</p>
+                                    <small class="text-primary">Basic farewell</small>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-3 col-6">
+                            <div class="card border-0 bg-light">
+                                <div class="card-body py-2 px-3">
+                                    <small class="text-muted">English</small>
+                                    <p class="mb-0 fw-bold">Thank you</p>
+                                    <small class="text-primary">Expression of gratitude</small>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-3 col-6">
+                            <div class="card border-0 bg-light">
+                                <div class="card-body py-2 px-3">
+                                    <small class="text-muted">English</small>
+                                    <p class="mb-0 fw-bold">Please</p>
+                                    <small class="text-primary">Polite request</small>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

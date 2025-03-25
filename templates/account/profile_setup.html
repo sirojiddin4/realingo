@@ -1,0 +1,79 @@
+{% extends 'base.html' %}
+
+{% block title %}Realingo - Profile Setup{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-md-8 mx-auto">
+        <div class="card shadow">
+            <div class="card-header bg-primary text-white">
+                <h2 class="card-title mb-0">Set Up Your Learning Profile</h2>
+            </div>
+            <div class="card-body p-4">
+                <p class="lead mb-4">
+                    Welcome to Realingo! Let's set up your learning profile to personalize your language learning experience.
+                </p>
+                
+                <form method="post">
+                    {% csrf_token %}
+                    
+                    {% if form.errors %}
+                        <div class="alert alert-danger">
+                            <p>There were some errors with your submission:</p>
+                            {{ form.errors }}
+                        </div>
+                    {% endif %}
+                    
+                    <div class="mb-4">
+                        <label for="id_learning_language" class="form-label fw-bold">What language would you like to learn?</label>
+                        <select name="learning_language" id="id_learning_language" class="form-select form-select-lg">
+                            {% for value, text in form.fields.learning_language.choices %}
+                                <option value="{{ value }}" {% if form.initial.learning_language == value %}selected{% endif %}>
+                                    {{ text }}
+                                </option>
+                            {% endfor %}
+                        </select>
+                        {% if form.learning_language.errors %}
+                            <div class="text-danger">{{ form.learning_language.errors }}</div>
+                        {% endif %}
+                    </div>
+                    
+                    <div class="mb-4">
+                        <label for="id_proficiency_level" class="form-label fw-bold">What is your current proficiency level?</label>
+                        <select name="proficiency_level" id="id_proficiency_level" class="form-select form-select-lg">
+                            {% for value, text in form.fields.proficiency_level.choices %}
+                                <option value="{{ value }}" {% if form.initial.proficiency_level == value %}selected{% endif %}>
+                                    {{ text }}
+                                </option>
+                            {% endfor %}
+                        </select>
+                        <div class="form-text">This helps us adjust the difficulty of the language content for you.</div>
+                        {% if form.proficiency_level.errors %}
+                            <div class="text-danger">{{ form.proficiency_level.errors }}</div>
+                        {% endif %}
+                    </div>
+                    
+                    <div class="mb-4">
+                        <label for="id_chosen_field" class="form-label fw-bold">What field would you like to focus on?</label>
+                        <select name="chosen_field" id="id_chosen_field" class="form-select form-select-lg">
+                            {% for value, text in form.fields.chosen_field.choices %}
+                                <option value="{{ value }}" {% if form.initial.chosen_field == value %}selected{% endif %}>
+                                    {{ text }}
+                                </option>
+                            {% endfor %}
+                        </select>
+                        <div class="form-text">This will determine the context and vocabulary of your learning stories.</div>
+                        {% if form.chosen_field.errors %}
+                            <div class="text-danger">{{ form.chosen_field.errors }}</div>
+                        {% endif %}
+                    </div>
+                    
+                    <div class="d-grid gap-2">
+                        <button type="submit" class="btn btn-primary btn-lg">Save Profile & Start Learning</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

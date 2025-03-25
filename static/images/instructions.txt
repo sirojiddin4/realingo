@@ -1,0 +1,17 @@
+# Instructions for default_tutor.png
+
+For the default tutor image, you'll need to create a placeholder image file at:
+static/images/default_tutor.png
+
+You can use any image editing software to create a simple avatar-style image with dimensions of 150x150 pixels. Alternatively, you can download a free placeholder avatar from sites like:
+- https://www.flaticon.com/
+- https://pixabay.com/
+- https://unsplash.com/
+
+Make sure the image is:
+1. Square (1:1 aspect ratio)
+2. At least 150x150 pixels in size
+3. Saved as PNG format with the filename "default_tutor.png"
+4. Placed in the static/images/ directory
+
+This default image will be shown when no tutor image is available.
